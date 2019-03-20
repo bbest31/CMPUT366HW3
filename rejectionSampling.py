@@ -87,19 +87,21 @@ def rejection_sampled_expectation(target, proposal, f=identity, num_samples=2000
     #TODO: Add implementation here
     accepted_samples = []
     M = 0.05
+    
     for i in range(num_samples):
       # Sample x ~ g(x) from the proposal distribution.
       x = proposal.sample()
       # Sample u ~ Uniform[0,1]
       u = uniform.sample()
 
+
       # If u <= [Mf*(x)/g(x)], accept x (add it to the list of samples)
       if u <= (M*target.pdf(x)/proposal.pdf(x)):
         accepted_samples.append(f(x))
     
     # Calculate the expected value of f(x)
-    print(f"Expected value of f(x): {mean(accepted_samples)} with {num_samples-len(accepted_samples)} rejected samples\n")
-    return mean(accepted_samples)
+    print(f"Expected value of f(x): {sum(accepted_samples)* (1/len(accepted_samples))}\n")
+    return sum(accepted_samples) * (1/len(accepted_samples))
 
 
 def main():
