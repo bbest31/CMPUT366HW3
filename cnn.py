@@ -51,6 +51,10 @@ def mlp2(train_x, train_y, test1_x, test1_y, test2_x, test2_y):
     # First layer will need argument `input_shape=(30,30)`
     model = Sequential([
         # TODO: add your implementation here
+        Flatten(input_shape=(30, 30)),
+        Dense(128,activation='relu'),
+        Dense(64,activation='relu'),
+        Dense(10,activation='softmax')
     ])
 
     model.compile(optimizer='adam',
@@ -59,7 +63,7 @@ def mlp2(train_x, train_y, test1_x, test1_y, test2_x, test2_y):
     model.fit(train_x, train_y, epochs=5)
 
     print("Evaluating MLP2 on test set 1")
-    model.evaluate(test1_x, test1_y)
+    print(model.evaluate(test1_x, test1_y))
     print("Evaluating MLP2 on test set 2")
     return model.evaluate(test2_x, test2_y)
 
@@ -75,6 +79,13 @@ def cnn(train_x, train_y, test1_x, test1_y, test2_x, test2_y):
     # First layer will need argument `input_shape=(30,30,1)`
     model = Sequential([
         # TODO: add your implementation here
+        Conv2D(32,(5,5)),
+        MaxPooling2D((2,2),(2,2)),
+        Conv2D(64,(5,5)),
+        MaxPooling2D((2,2),(1,1)),
+        Flatten(input_shape=(30,30,1)),
+        Dense(512,activation='relu'),
+        Dense(10,activation='softmax')
     ])
 
     model.compile(optimizer='adam',
@@ -83,7 +94,7 @@ def cnn(train_x, train_y, test1_x, test1_y, test2_x, test2_y):
     model.fit(trn_x, train_y, epochs=5)
 
     print("Evaluating CNN on test set 1")
-    model.evaluate(tst1_x, test1_y)
+    print(model.evaluate(tst1_x, test1_y))
     print("Evaluating CNN on test set 2")
     return model.evaluate(tst2_x, test2_y)
 
@@ -96,8 +107,8 @@ def main():
     show_examples(test1_x, test1_y, test2_x, test2_y, 'examples.png')
 
     mlp1(train1_x, train1_y, test1_x, test1_y, test2_x, test2_y)
-    mlp2(train1_x, train1_y, test1_x, test1_y, test2_x, test2_y)
-    cnn(train1_x, train1_y, test1_x, test1_y, test2_x, test2_y)
+    print(mlp2(train1_x, train1_y, test1_x, test1_y, test2_x, test2_y))
+    print(cnn(train1_x, train1_y, test1_x, test1_y, test2_x, test2_y))
 
 
 if __name__ == '__main__':
